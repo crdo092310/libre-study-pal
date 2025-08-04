@@ -79,8 +79,8 @@ const LandingPage = () => {
               <span className="text-xl font-bold">StudyPlan AI</span>
             </div>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost">Sign In</Button>
-              <Button variant="hero">Get Started Free</Button>
+              <Button variant="ghost" onClick={() => window.location.href = '/auth'}>Sign In</Button>
+              <Button variant="hero" onClick={() => window.location.href = '/auth'}>Get Started Free</Button>
             </div>
           </div>
         </div>
@@ -110,13 +110,13 @@ const LandingPage = () => {
               </div>
               
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button variant="hero" size="xl" className="animate-slide-up">
+                <Button variant="hero" size="xl" className="animate-slide-up" onClick={() => window.location.href = '/auth'}>
                   <Star className="h-5 w-5 mr-2" />
                   Start Learning Free
                 </Button>
-                <Button variant="outline" size="xl" className="animate-slide-up">
+                <Button variant="outline" size="xl" className="animate-slide-up" onClick={() => window.location.href = '/auth'}>
                   <BookOpen className="h-5 w-5 mr-2" />
-                  View Demo
+                  Sign In
                 </Button>
               </div>
 
@@ -225,13 +225,13 @@ const LandingPage = () => {
               Start your journey today - completely free!
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button variant="secondary" size="xl" className="text-primary">
+              <Button variant="secondary" size="xl" className="text-primary" onClick={() => window.location.href = '/auth'}>
                 <Trophy className="h-5 w-5 mr-2" />
                 Start Learning Now
               </Button>
-              <Button variant="outline" size="xl" className="border-white text-white hover:bg-white hover:text-primary">
+              <Button variant="outline" size="xl" className="border-white text-white hover:bg-white hover:text-primary" onClick={() => window.location.href = '/auth'}>
                 <Users className="h-5 w-5 mr-2" />
-                Join Community
+                Sign In
               </Button>
             </div>
           </div>

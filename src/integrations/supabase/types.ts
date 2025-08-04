@@ -14,7 +14,137 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      profiles: {
+        Row: {
+          avatar_url: string | null
+          created_at: string
+          current_streak: number | null
+          display_name: string | null
+          id: string
+          level: number | null
+          longest_streak: number | null
+          total_xp: number | null
+          updated_at: string
+          user_id: string
+          username: string | null
+        }
+        Insert: {
+          avatar_url?: string | null
+          created_at?: string
+          current_streak?: number | null
+          display_name?: string | null
+          id?: string
+          level?: number | null
+          longest_streak?: number | null
+          total_xp?: number | null
+          updated_at?: string
+          user_id: string
+          username?: string | null
+        }
+        Update: {
+          avatar_url?: string | null
+          created_at?: string
+          current_streak?: number | null
+          display_name?: string | null
+          id?: string
+          level?: number | null
+          longest_streak?: number | null
+          total_xp?: number | null
+          updated_at?: string
+          user_id?: string
+          username?: string | null
+        }
+        Relationships: []
+      }
+      study_plans: {
+        Row: {
+          actual_hours: number | null
+          completed_at: string | null
+          created_at: string
+          description: string | null
+          due_date: string | null
+          estimated_hours: number | null
+          id: string
+          priority: string | null
+          status: string | null
+          subject: string | null
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          actual_hours?: number | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          estimated_hours?: number | null
+          id?: string
+          priority?: string | null
+          status?: string | null
+          subject?: string | null
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          actual_hours?: number | null
+          completed_at?: string | null
+          created_at?: string
+          description?: string | null
+          due_date?: string | null
+          estimated_hours?: number | null
+          id?: string
+          priority?: string | null
+          status?: string | null
+          subject?: string | null
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      study_sessions: {
+        Row: {
+          completed_at: string
+          created_at: string
+          duration_minutes: number
+          id: string
+          session_type: string | null
+          study_plan_id: string | null
+          user_id: string
+          xp_earned: number | null
+        }
+        Insert: {
+          completed_at?: string
+          created_at?: string
+          duration_minutes: number
+          id?: string
+          session_type?: string | null
+          study_plan_id?: string | null
+          user_id: string
+          xp_earned?: number | null
+        }
+        Update: {
+          completed_at?: string
+          created_at?: string
+          duration_minutes?: number
+          id?: string
+          session_type?: string | null
+          study_plan_id?: string | null
+          user_id?: string
+          xp_earned?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "study_sessions_study_plan_id_fkey"
+            columns: ["study_plan_id"]
+            isOneToOne: false
+            referencedRelation: "study_plans"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

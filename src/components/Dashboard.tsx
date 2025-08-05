@@ -10,6 +10,10 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/hooks/use-toast';
 import { User, Session } from '@supabase/supabase-js';
+import Profile from './Profile';
+import Leaderboard from './Leaderboard';
+import Settings from './Settings';
+import AICoach from './AICoach';
 import { 
   GraduationCap, 
   Plus, 
@@ -20,13 +24,14 @@ import {
   Trophy, 
   Star,
   User as UserIcon,
-  Settings,
+  Settings as SettingsIcon,
   LogOut,
   Play,
   Pause,
   CheckCircle,
   Brain,
-  BarChart3
+  BarChart3,
+  Medal
 } from 'lucide-react';
 
 interface StudyPlan {
@@ -63,6 +68,7 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [showAddForm, setShowAddForm] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'profile' | 'leaderboard' | 'settings' | 'coach'>('dashboard');
   const { toast } = useToast();
 
   // Form states
@@ -288,7 +294,7 @@ export default function Dashboard() {
 
             <div className="flex items-center gap-4">
               {profile && (
-                <div className="flex items-center gap-3 text-sm">
+                <div className="hidden md:flex items-center gap-3 text-sm">
                   <div className="flex items-center gap-1">
                     <Trophy className="h-4 w-4 text-yellow-500" />
                     <span>Level {profile.level}</span>
@@ -313,7 +319,58 @@ export default function Dashboard() {
       </header>
 
       <div className="container mx-auto px-4 py-8">
-        <div className="grid gap-6 lg:grid-cols-4">
+        {/* Navigation Tabs */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          <Button 
+            variant={activeTab === 'dashboard' ? 'default' : 'ghost'} 
+            onClick={() => setActiveTab('dashboard')}
+            className="flex items-center gap-2"
+          >
+            <BookOpen className="h-4 w-4" />
+            <span className="hidden sm:inline">Dashboard</span>
+          </Button>
+          <Button 
+            variant={activeTab === 'profile' ? 'default' : 'ghost'} 
+            onClick={() => setActiveTab('profile')}
+            className="flex items-center gap-2"
+          >
+            <UserIcon className="h-4 w-4" />
+            <span className="hidden sm:inline">Profile</span>
+          </Button>
+          <Button 
+            variant={activeTab === 'leaderboard' ? 'default' : 'ghost'} 
+            onClick={() => setActiveTab('leaderboard')}
+            className="flex items-center gap-2"
+          >
+            <Medal className="h-4 w-4" />
+            <span className="hidden sm:inline">Leaderboard</span>
+          </Button>
+          <Button 
+            variant={activeTab === 'coach' ? 'default' : 'ghost'} 
+            onClick={() => setActiveTab('coach')}
+            className="flex items-center gap-2"
+          >
+            <Brain className="h-4 w-4" />
+            <span className="hidden sm:inline">AI Coach</span>
+          </Button>
+          <Button 
+            variant={activeTab === 'settings' ? 'default' : 'ghost'} 
+            onClick={() => setActiveTab('settings')}
+            className="flex items-center gap-2"
+          >
+            <SettingsIcon className="h-4 w-4" />
+            <span className="hidden sm:inline">Settings</span>
+          </Button>
+        </div>
+
+        {/* Render content based on active tab */}
+        {activeTab === 'profile' && user && session && <Profile user={user} session={session} />}
+        {activeTab === 'leaderboard' && <Leaderboard />}
+        {activeTab === 'settings' && <Settings onSignOut={handleSignOut} />}
+        {activeTab === 'coach' && <AICoach />}
+
+        {activeTab === 'dashboard' && (
+          <div className="grid gap-6 lg:grid-cols-4">
           {/* Stats Cards */}
           <div className="lg:col-span-4 grid gap-4 md:grid-cols-4">
             <Card className="bg-gradient-to-r from-blue-500/20 to-blue-600/20 border-blue-200">
@@ -632,6 +689,7 @@ export default function Dashboard() {
             )}
           </div>
         </div>
+        )}
       </div>
     </div>
   );

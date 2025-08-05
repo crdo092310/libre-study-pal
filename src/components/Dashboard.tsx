@@ -220,10 +220,12 @@ export default function Dashboard() {
           : plan
       ));
 
-      if (status === 'completed') {
+      if (status === 'completed' && user) {
+        // Award XP and update profile
+        await awardXP(user.id, 50);
         toast({
           title: "Congratulations!",
-          description: "Study plan completed! You earned XP points.",
+          description: "Study plan completed! You earned 50 XP points.",
         });
       }
 
@@ -233,6 +235,56 @@ export default function Dashboard() {
         description: error.message,
         variant: "destructive",
       });
+    }
+  };
+
+  const awardXP = async (userId: string, xpAmount: number) => {
+    try {
+      const { data: currentProfile, error: fetchError } = await supabase
+        .from('profiles')
+        .select('total_xp, level, current_streak')
+        .eq('user_id', userId)
+        .single();
+
+      if (fetchError) throw fetchError;
+
+      const newTotalXP = (currentProfile.total_xp || 0) + xpAmount;
+      const newLevel = Math.floor(newTotalXP / 100) + 1; // Level up every 100 XP
+      const newStreak = (currentProfile.current_streak || 0) + 1;
+
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ 
+          total_xp: newTotalXP,
+          level: newLevel,
+          current_streak: newStreak,
+          longest_streak: Math.max(newStreak, currentProfile.current_streak || 0)
+        })
+        .eq('user_id', userId);
+
+      if (updateError) throw updateError;
+
+      // Update local profile state
+      setProfile(prev => prev ? {
+        ...prev,
+        total_xp: newTotalXP,
+        level: newLevel,
+        current_streak: newStreak,
+        longest_streak: Math.max(newStreak, prev.longest_streak)
+      } : null);
+
+      // Create study session record
+      await supabase
+        .from('study_sessions')
+        .insert([{
+          user_id: userId,
+          duration_minutes: 30, // Default duration
+          xp_earned: xpAmount,
+          session_type: 'study'
+        }]);
+
+    } catch (error: any) {
+      console.error('Error awarding XP:', error);
     }
   };
 
@@ -283,9 +335,11 @@ export default function Dashboard() {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <GraduationCap className="h-8 w-8 text-primary" />
+              <div className="h-10 w-10 bg-gradient-to-r from-primary to-primary-glow rounded-lg flex items-center justify-center">
+                <BookOpen className="h-6 w-6 text-white" />
+              </div>
               <div>
-                <h1 className="text-2xl font-bold text-foreground">StudyPlanner</h1>
+                <h1 className="text-2xl font-bold text-foreground">StudyPlan AI</h1>
                 <p className="text-sm text-muted-foreground">
                   Welcome back, {profile?.display_name || user?.email?.split('@')[0]}!
                 </p>

@@ -73,7 +73,7 @@ const LandingPage = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 bg-gradient-hero rounded-lg flex items-center justify-center">
+              <div className="h-8 w-8 bg-gradient-to-r from-primary to-primary-glow rounded-lg flex items-center justify-center">
                 <BookOpen className="h-5 w-5 text-white" />
               </div>
               <span className="text-xl font-bold">StudyPlan AI</span>
@@ -243,7 +243,7 @@ const LandingPage = () => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 bg-gradient-hero rounded-lg flex items-center justify-center">
+              <div className="h-8 w-8 bg-gradient-to-r from-primary to-primary-glow rounded-lg flex items-center justify-center">
                 <BookOpen className="h-5 w-5 text-white" />
               </div>
               <span className="text-xl font-bold">StudyPlan AI</span>
